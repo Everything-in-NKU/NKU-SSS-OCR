@@ -1,4 +1,4 @@
 # NKU-SSS-OCR
 Just a trial of OCR
 
-#嗯这个只是试试╮(￣▽￣")╭ 
+#也许会很好用的喵
