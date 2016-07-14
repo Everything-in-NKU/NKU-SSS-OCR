@@ -1,15 +1,21 @@
 import numpy
 
+# def DiffSqrt(Mat1, Mat2):
+# 	if Mat1.shape != Mat2.shape:
+# 		return 0.0
+# 	F = numpy.where(Mat1 == Mat2, 1, 0).reshape((1,-1))[0]
+# 	C = list(numpy.bincount(F))
+# 	J = F.shape[0]
+# 	if len(C) <= 1:
+# 		D = 0
+# 	else:
+# 		D = C[1]
+# 	return float(D)/J, J
+
 def DiffSqrt(Mat1, Mat2):
-	if Mat1.shape != Mat2.shape:
-		return 0.0
-	F = numpy.where(Mat1 == Mat2, 1, 0).reshape((1,-1))[0]
-	C = list(numpy.bincount(F))
-	J = F.shape[0]
-	if len(C) <= 1:
-		D = 0
-	else:
-		D = C[1]
+	assert Mat1.shape == Mat2.shape
+	D = numpy.count_nonzero(Mat1 == Mat2)
+	J = Mat1.size
 	return float(D)/J, J
 
 def FitSizes(Mat1, Mat2):

@@ -28,6 +28,14 @@ def MaxEnhance(NP):
 				pass
 	return J
 
+def MaxEnhance2(NP):
+	N_array = numpy.zeros(NP.shape[:2])
+	for i in range(3):
+		F = NP[:, :, i]
+		G = numpy.bincount(F.reshape((-1,))).argmax()
+		N_array += (F - G)**2
+	return numpy.where(N_array > (N_array.max()**0.73), 255, 0)
+
 def x_Ran(IMG_Arr):
 	G = numpy.transpose(IMG_Arr)
 	Gx_bit = [[1 if j>0 else 0 for j in i] for i in G]
@@ -65,10 +73,14 @@ def y_Ran(Sub_IMG_Arr):
 
 
 def CutBox(im):
-	Q = numpy.asarray(im)
-	Arr = MaxEnhance(Q)
-	MAX = numpy.amax(Arr)
-	Arr = numpy.where(Arr>((30*MAX)/255), 255, 0)
+	# Q = numpy.asarray(im)
+	# Arr = MaxEnhance(Q)
+	# MAX = numpy.amax(Arr)
+	# Arr = numpy.where(Arr>((30*MAX)/255), 255, 0)
+	
+	Q = numpy.asarray(im, dtype = numpy.int32)
+	Arr = MaxEnhance2(Q)
+
 	X_range = x_Ran(Arr)
 	Arr = numpy.transpose(Arr)
 	Tmp = []

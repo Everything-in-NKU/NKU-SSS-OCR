@@ -18,6 +18,7 @@ if __name__ == '__main__':
 	F = 0
 	SU = 3000
 	i = 0
+	T = []
 	while i < SU:
 		try:
 			i += 1
@@ -25,15 +26,17 @@ if __name__ == '__main__':
 			S = Image.open(StringIO.StringIO(G.get("http://222.30.32.10/ValidateCode", timeout = 3).content))
 			STA = time.time()
 			postdata["checkcode_text"] = V.IM_to_Str_MatDiff(S)
-			print time.time()-STA, "\t%s/%s"%(i,SU), 
+			D_Time = time.time()-STA
+			print D_Time, "\t%s/%s"%(i,SU), 
 			if re.findall(u"正确的验证码".encode("GBK"), G.post("http://222.30.32.10/stdloginAction.do", data = postdata, timeout = 3).content):
 				F += 1
 				print False
 			else:
 				print True
+			T.append(D_Time)
 		except KeyboardInterrupt:
 			break
 		except:
 			print "Error Occured"
 			break
-	print u"错误%s/总计%s"%(F, i)
+	print u"错误%s/总计%s/每次识别耗时%.04fs"%(F, i, sum(T)/len(T))
