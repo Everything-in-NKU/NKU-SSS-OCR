@@ -23,12 +23,12 @@ if __name__ == '__main__':
 		try:
 			i += 1
 			G = requests.session()
-			S = Image.open(StringIO.StringIO(G.get("http://222.30.32.10/ValidateCode", timeout = 3).content))
+			S = Image.open(StringIO.StringIO(G.get("http://222.30.32.10/ValidateCode", timeout = 6).content))
 			STA = time.time()
-			postdata["checkcode_text"] = V.IM_to_Str_MatDiff(S)
+			postdata["checkcode_text"] = V.IM_to_Str_MatDiff2(S)
 			D_Time = time.time()-STA
 			print D_Time, "\t%s/%s"%(i,SU), 
-			if re.findall(u"正确的验证码".encode("GBK"), G.post("http://222.30.32.10/stdloginAction.do", data = postdata, timeout = 3).content):
+			if re.findall(u"正确的验证码".encode("GBK"), G.post("http://222.30.32.10/stdloginAction.do", data = postdata, timeout = 6).content):
 				F += 1
 				print False
 			else:
@@ -38,5 +38,5 @@ if __name__ == '__main__':
 			break
 		except:
 			print "Error Occured"
-			break
+			# raise
 	print u"错误%s/总计%s/每次识别耗时%.04fs"%(F, i, sum(T)/len(T))

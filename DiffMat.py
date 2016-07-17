@@ -18,6 +18,16 @@ def DiffSqrt(Mat1, Mat2):
 	J = Mat1.size
 	return float(D)/J, J
 
+def DiffSqrt2(Mat1, Mat2):
+	assert Mat1.shape == Mat2.shape
+	#Mat1 will be the Sample
+	if Mat1.max() > 5:
+		Mat1, Mat2 = Mat2, Mat1
+	D = numpy.sum(Mat2*Mat1)/10
+	E = numpy.count_nonzero((~(Mat2>>3)+2) & (~Mat1+2)) 
+	J = Mat1.size
+	return float(D+E)/J, J
+
 def FitSizes(Mat1, Mat2):
 	#print Mat2, Mat1
 	if len(Mat2.shape) != 2 or len(Mat1.shape) != 2:
@@ -35,6 +45,12 @@ def Diff_Matrix(Mat1, Mat2):
 	H = max([(DiffSqrt(*i[0]), i[1])  for i in FitSizes(Mat1, Mat2)], key = lambda x:x[0][0])
 	H = [H[0][0], H[1][2]]
 	return H
+
+def Diff_Matrix2(Mat1, Mat2):
+	H = max([(DiffSqrt2(*i[0]), i[1])  for i in FitSizes(Mat1, Mat2)], key = lambda x:x[0][0])
+	H = [H[0][0], H[1][2]]
+	return H
+
 
 if __name__ == '__main__':
 	Q = numpy.array([[1,0,1],[1,1,0],[1,1,1]])
