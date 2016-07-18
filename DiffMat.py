@@ -12,19 +12,26 @@ import numpy
 # 		D = C[1]
 # 	return float(D)/J, J
 
-def DiffSqrt(Mat1, Mat2):
+def DiffSqrt(Mat1, Mat2):  #An equivalent of the previous version
 	assert Mat1.shape == Mat2.shape
 	D = numpy.count_nonzero(Mat1 == Mat2)
 	J = Mat1.size
 	return float(D)/J, J
 
-def DiffSqrt2(Mat1, Mat2):
+def DiffSqrt2(Mat1, Mat2):  # Equivalent of DiffSqrt_Merge with some magic number 
 	assert Mat1.shape == Mat2.shape
 	#Mat1 will be the Sample
 	if Mat1.max() > 5:
 		Mat1, Mat2 = Mat2, Mat1
 	D = numpy.sum(Mat2*Mat1)/10
 	E = numpy.count_nonzero((~(Mat2>>3)+2) & (~Mat1+2)) 
+	J = Mat1.size
+	return float(D+E)/J, J
+
+def DiffSqrt_Merge(Mat1, Mat2):
+	assert Mat1.shape == Mat2.shape
+	D = numpy.sum(Mat2*Mat1)/(Mat1.max()*Mat2.max())
+	E = numpy.count_nonzero((Mat1<(0.75*Mat1.max())) & (Mat2<(0.75*Mat2.max())) )
 	J = Mat1.size
 	return float(D+E)/J, J
 
@@ -48,6 +55,11 @@ def Diff_Matrix(Mat1, Mat2):
 
 def Diff_Matrix2(Mat1, Mat2):
 	H = max([(DiffSqrt2(*i[0]), i[1])  for i in FitSizes(Mat1, Mat2)], key = lambda x:x[0][0])
+	H = [H[0][0], H[1][2]]
+	return H
+
+def Diff_Matrix_Merge(Mat1, Mat2):
+	H = max([(DiffSqrt_Merge(*i[0]), i[1])  for i in FitSizes(Mat1, Mat2)], key = lambda x:x[0][0])
 	H = [H[0][0], H[1][2]]
 	return H
 

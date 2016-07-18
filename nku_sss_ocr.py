@@ -12,9 +12,16 @@ class Val_to_Str():
 		Im = Image.open("Test.jpg")
 		print OCRobj.IM_to_Str_MatDiff(Im)
 	"""
-	def __init__(self):
-		self.DB = json.loads(open(os.path.split(os.path.realpath(__file__))[0]+"/lib.txt").read())
-		self.DB2 = json.loads(open(os.path.split(os.path.realpath(__file__))[0]+"/lib2_alpha_and_num.txt").read())
+	def __init__(self, libs = "alpha_num"):
+		if libs == "alpha_num":
+			self.DB = json.loads(open(os.path.split(os.path.realpath(__file__))[0]+"/lib.txt").read())
+			self.DB2 = json.loads(open(os.path.split(os.path.realpath(__file__))[0]+"/lib2_alpha_and_num.txt").read())
+		elif libs == "num":
+			self.DB = json.loads(open(os.path.split(os.path.realpath(__file__))[0]+"/nums.txt").read())
+			self.DB2 = json.loads(open(os.path.split(os.path.realpath(__file__))[0]+"/nums_2.txt").read())
+		else:
+			raise BaseException, "No a valid lib type"
+
 		for i in self.DB.keys():
 			self.DB[i] = self.base64_zlib_json_load(self.DB[i])
 		for i in self.DB2.keys():
