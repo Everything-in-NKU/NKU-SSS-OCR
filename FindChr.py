@@ -30,11 +30,16 @@ def MaxEnhance(NP):
 
 def MaxEnhance2(NP):
 	N_array = numpy.zeros(NP.shape[:2])
+	Ten = numpy.zeros(N_array.shape)
+	Ten.fill(10)
 	for i in range(3):
 		F = NP[:, :, i]
 		G = numpy.bincount(F.reshape((-1,))).argmax()
-		N_array += (F - G)**2
-	return numpy.where(N_array > (N_array.max()**0.73), 255, 0)
+		Q = abs(F-G)
+		Cons = 5.5228/Q.max() #5.5228 is log((1/3)*10^6)
+		# N_array += (F - G)**2
+		N_array += Ten**(Cons*Q)
+	return numpy.where(N_array > 100, 255, 0)
 
 def x_Ran(IMG_Arr):
 	G = numpy.transpose(IMG_Arr)
